@@ -1,0 +1,42 @@
+= TEMPLATE API 문서
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== example API
+
+=== 예시 조회
+==== 요청 예시
+include::{snippets}/get-example/http-request.adoc[]
+==== 응답 예시
+include::{snippets}/get-example/http-response.adoc[]
+==== 응답 필드
+include::{snippets}/get-example/response-fields.adoc[]
+
+=== 예시 생성
+==== 요청 예시
+include::{snippets}/create-example/http-request.adoc[]
+==== 요청 필드
+include::{snippets}/create-example/request-fields.adoc[]
+==== 응답 예시
+include::{snippets}/create-example/http-response.adoc[]
+==== 응답 필드
+include::{snippets}/create-example/response-fields.adoc[]
+
+=== 예시 수정
+==== 요청 예시
+include::{snippets}/update-example/http-request.adoc[]
+==== 요청 필드
+include::{snippets}/update-example/request-fields.adoc[]
+==== 응답 예시
+include::{snippets}/update-example/http-response.adoc[]
+==== 응답 필드
+include::{snippets}/update-example/response-fields.adoc[]
+
+=== 예시 삭제
+==== 요청 예시
+include::{snippets}/delete-example/http-request.adoc[]
+==== 응답 예시
+include::{snippets}/delete-example/http-response.adoc[]
+==== 응답 필드
+include::{snippets}/delete-example/response-fields.adoc[]
