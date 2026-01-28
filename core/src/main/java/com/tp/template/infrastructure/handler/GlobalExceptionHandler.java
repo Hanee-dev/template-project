@@ -1,6 +1,6 @@
 package com.tp.template.infrastructure.handler;
 
-import com.tp.template.infrastructure.dto.ApiResponse;
+import com.tp.template.infrastructure.dto.CommonApiResponse;
 import com.tp.template.infrastructure.enums.ErrorType;
 import com.tp.template.infrastructure.exception.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -13,13 +13,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiResponse<Void> handleEntityNotFoundException(EntityNotFoundException ex) {
-        return ApiResponse.fail(ex.getErrorType());
+    public CommonApiResponse<Void> handleEntityNotFoundException(EntityNotFoundException ex) {
+        return CommonApiResponse.fail(ex.getErrorType());
     }
 
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiResponse<Void> handleRuntimeException(RuntimeException ex) {
-        return ApiResponse.fail(ErrorType.E_알수없는_오류);
+    public CommonApiResponse<Void> handleRuntimeException(RuntimeException ex) {
+        return CommonApiResponse.fail(ErrorType.E_알수없는_오류);
     }
 }

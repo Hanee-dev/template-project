@@ -13,13 +13,14 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  data:
-    redis:
-      host: localhost
-      port: 6379
 
 jwt:
   auth:
-    secret-key: dev-secret-key-change-this-in-production-environment-12345
+    secret-key: dev-secret-key-change-this-in-production-environment-must-be-at-least-32-characters-long-1234567890
     expired-at-second: 86400  #30일
 
+springdoc:
+  api-docs:
+    path: /swagger/api-docs
+  swagger-ui:
+    path: /swagger/ui

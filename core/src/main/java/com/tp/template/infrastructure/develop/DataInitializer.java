@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@Profile("local")
+@Profile("!prod")
 public class DataInitializer implements ApplicationRunner {
 
     private final LanguageTranslationAdapter languageTranslationAdapter;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         List<LanguageTranslation> translations = languageTranslationAdapter.all();
 
         if(!translations.isEmpty()) {

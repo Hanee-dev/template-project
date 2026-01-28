@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '4.0.1'
     id 'io.spring.dependency-management' version '1.1.7'
-    id 'org.asciidoctor.jvm.convert' version '4.0.4'
 }
 
 group = 'com.tp.template'
@@ -20,16 +19,6 @@ configurations {
     }
 }
 
-ext {
-    snippetsDir = file('build/generated-snippets')
-}
-
-asciidoctor {
-    inputs.dir snippetsDir
-    attributes "snippets": snippetsDir
-    dependsOn test
-}
-
 repositories {
     mavenCentral()
 }
@@ -44,17 +33,18 @@ dependencies {
 
     implementation platform('org.springframework.cloud:spring-cloud-dependencies:2025.1.0')
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    testImplementation project(':core')
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
-    testImplementation 'org.springframework.boot:spring-boot-restdocs'
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.mysql:mysql-connector-j'
 }
 
 // spring-cloud-dependencies:2025.1.0 취약점 해결 전 임시조치
@@ -69,11 +59,5 @@ tasks.named('test') {
 }
 
 bootJar {
-    dependsOn(asciidoctor)
     archiveFileName = "service-api.jar"
-
-    from({ asciidoctor.outputDir }) {
-        into("static/docs")
-    }
 }
-

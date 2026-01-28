@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/TEMPLATE_DB?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    username: template_db_user
+    password: password1234!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+jwt:
+  auth:
+    secret-key: dev-secret-key-change-this-in-production-environment-must-be-at-least-32-characters-long-1234567890
+    expired-at-second: 86400  #30일
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false

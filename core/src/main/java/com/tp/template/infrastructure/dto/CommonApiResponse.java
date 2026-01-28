@@ -11,50 +11,50 @@ import lombok.Getter;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
-public class ApiResponse<T> {
+public class CommonApiResponse<T> {
 
-    ApiResponseCode result;
+    ApiResponseCode code;
     ErrorCode errorCode;
     LanguageId languageId;
     String message;
-    T data;
+    T payload;
 
-    public static ApiResponse<Void> fail(ErrorType error) {
+    public static CommonApiResponse<Void> fail(ErrorType error) {
         // @formatter:off
-        return ApiResponse.<Void>builder()
-                .result(ApiResponseCode.FM)
+        return CommonApiResponse.<Void>builder()
+                .code(ApiResponseCode.FM)
                 .errorCode(error.getErrorCode())
                 .languageId(error.getLanguageId())
                 .build();
         // @formatter:on
     }
 
-    public static <T> ApiResponse<T> fail(ErrorType error, T data) {
+    public static <T> CommonApiResponse<T> fail(ErrorType error, T payload) {
         // @formatter:off
-        return ApiResponse.<T>builder()
-                .result(ApiResponseCode.FM)
+        return CommonApiResponse.<T>builder()
+                .code(ApiResponseCode.FM)
                 .errorCode(error.getErrorCode())
                 .languageId(error.getLanguageId())
-                .data(data)
+                .payload(payload)
                 .build();
         // @formatter:on
     }
 
-    public static ApiResponse<Void> success() {
+    public static CommonApiResponse<Void> success() {
         // @formatter:off
-        return ApiResponse.<Void>builder()
-                .result(ApiResponseCode.SM)
+        return CommonApiResponse.<Void>builder()
+                .code(ApiResponseCode.SM)
                 .languageId(LanguageId.M_정상처리_완료)
                 .build();
         // @formatter:on
     }
 
-    public static <T> ApiResponse<T> success(T data) {
+    public static <T> CommonApiResponse<T> success(T payload) {
         // @formatter:off
-        return ApiResponse.<T>builder()
-                .result(ApiResponseCode.SM)
+        return CommonApiResponse.<T>builder()
+                .code(ApiResponseCode.SM)
                 .languageId(LanguageId.M_정상처리_완료)
-                .data(data)
+                .payload(payload)
                 .build();
         // @formatter:on
     }

@@ -1,13 +1,12 @@
 package com.tp.template.infrastructure.filter;
 
-import com.tp.template.infrastructure.dto.ApiResponse;
+import com.tp.template.infrastructure.dto.CommonApiResponse;
 import com.tp.template.infrastructure.dto.CustomUserPrincipal;
 import com.tp.template.infrastructure.enums.ErrorType;
 import com.tp.template.infrastructure.i18n.translation.application.domain.LanguageTranslation;
 import com.tp.template.infrastructure.i18n.translation.application.port.in.LanguageTranslationCacheQuery;
 import com.tp.template.infrastructure.util.JwtTokenUtils;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -31,7 +30,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final LanguageTranslationCacheQuery translationQuery;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return path.startsWith("/api/no-auth/") || path.startsWith("/swagger/");
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
+        // @formatter:off
         try {
             String token = extractToken(request);
             if(!StringUtils.hasText(token)) {
@@ -43,13 +49,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principal, null, null);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext()
-                    .setAuthentication(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
             filterChain.doFilter(request, response);
         }catch(Exception e) {
             sendErrorResponse(request, response, ErrorType.E_JWT_인증_실패);
         }
+        // @formatter:on
     }
 
     private String extractToken(HttpServletRequest request) {
@@ -63,16 +69,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void sendErrorResponse(HttpServletRequest request, HttpServletResponse response, ErrorType errorType) throws IOException {
-        ApiResponse<Void> body = ApiResponse.fail(errorType);
+        // @formatter:off
+        CommonApiResponse<Void> body = CommonApiResponse.fail(errorType);
 
         LanguageTranslation translation = translationQuery.getTranslation(errorType.getLanguageId());
-        String language = Optional.ofNullable(request.getHeader("Accept-Language"))
-                .orElse("ko");
+        String language = Optional.ofNullable(request.getHeader("Accept-Language")).orElse("ko");
         body.translate(translation.getTranslation(language));
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter()
-                .write(objectMapper.writeValueAsString(body));
+        response.getWriter().write(objectMapper.writeValueAsString(body));
+        // @formatter:on
     }
 }

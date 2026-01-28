@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenUtils {
 
+    // @formatter:off
     private final JwtAuthProperties jwtAuth;
     private final Key key;
     private static final String USER_ID = "userId";
@@ -26,22 +27,16 @@ public class JwtTokenUtils {
 
     public JwtTokenUtils(JwtAuthProperties jwtAuthProperties) {
         jwtAuth = jwtAuthProperties;
-        key = Keys.hmacShaKeyFor(jwtAuthProperties.secretKey()
-                .getBytes());
+        key = Keys.hmacShaKeyFor(jwtAuthProperties.secretKey().getBytes());
     }
 
     public String generateToken(LoginToken loginToken) {
         return Jwts.builder()
                 .claim(USER_ID, loginToken.userId())
                 .claim(USER_NAME, loginToken.username())
-                .claim(LOCALE, loginToken.locale())
-                .setIssuedAt(Date.from(LocalDateTime.now()
-                        .atZone(ZoneId.systemDefault())
-                        .toInstant()))
-                .setExpiration(Date.from(LocalDateTime.now()
-                        .plusSeconds(jwtAuth.expiredAtSecond())
-                        .atZone(ZoneId.systemDefault())
-                        .toInstant()))
+                .claim(LOCALE, loginToken.locale().toLanguageTag())
+                .setIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
+                .setExpiration(Date.from(LocalDateTime.now().plusSeconds(jwtAuth.expiredAtSecond()).atZone(ZoneId.systemDefault()).toInstant()))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -53,6 +48,7 @@ public class JwtTokenUtils {
                 .parseClaimsJws(token)
                 .getBody();
 
-        return new LoginToken(claims.get(USER_ID, Long.class), claims.get(USER_NAME, String.class), claims.get(LOCALE, Locale.class));
+        return new LoginToken(claims.get(USER_ID, Long.class), claims.get(USER_NAME, String.class), Locale.forLanguageTag(claims.get(LOCALE, String.class)));
     }
+    // @formatter:on
 }

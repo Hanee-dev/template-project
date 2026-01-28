@@ -1,6 +1,6 @@
 package com.tp.template.infrastructure.handler;
 
-import com.tp.template.infrastructure.dto.ApiResponse;
+import com.tp.template.infrastructure.dto.CommonApiResponse;
 import com.tp.template.infrastructure.i18n.translation.application.domain.LanguageTranslation;
 import com.tp.template.infrastructure.i18n.translation.application.port.in.LanguageTranslationCacheQuery;
 import java.util.Locale;
@@ -16,18 +16,18 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
-public class ResponseTranslationAdvice implements ResponseBodyAdvice<ApiResponse<?>> {
+public class ResponseTranslationAdvice implements ResponseBodyAdvice<CommonApiResponse<?>> {
 
     private final LanguageTranslationCacheQuery translationQuery;
 
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-        return ApiResponse.class.isAssignableFrom(returnType.getParameterType());
+        return CommonApiResponse.class.isAssignableFrom(returnType.getParameterType());
     }
 
     @Override
-    public ApiResponse<?> beforeBodyWrite(
-            ApiResponse<?> body,
+    public CommonApiResponse<?> beforeBodyWrite(
+            CommonApiResponse<?> body,
             MethodParameter returnType,
             MediaType selectedContentType,
             Class<? extends HttpMessageConverter<?>> selectedConverterType,
