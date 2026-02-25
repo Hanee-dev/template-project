@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- %clr, %wEx 등 Spring Boot 커스텀 컨버터 등록 -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- ===================== LOCAL ===================== -->
+    <!-- 컬러 콘솔, DEBUG, plain text -->
+    <springProfile name="local">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%clr(%d{HH:mm:ss.SSS}){faint} %clr(%5p){highlight} [%clr(%X{requestId:-NO_ID}){cyan}] %clr(---){faint} [%15.15t] %clr(%-40.40logger{39}){cyan} : %m%n%wEx</pattern>
+            </encoder>
+        </appender>
+
+        <!-- 외부 라이브러리 노이즈 억제 -->
+        <logger name="org.springframework.security" level="INFO"/>
+        <logger name="org.springframework.web" level="INFO"/>
+        <logger name="org.hibernate" level="INFO"/>
+        <logger name="org.hibernate.SQL" level="DEBUG"/>
+
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <!-- ===================== QA ===================== -->
+    <!-- 콘솔 JSON, INFO -->
+    <springProfile name="qa">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="ch.qos.logback.classic.encoder.JsonEncoder"/>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <!-- ===================== PROD ===================== -->
+    <!-- 콘솔 JSON, WARN (앱 패키지는 INFO 유지) -->
+    <springProfile name="prod">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="ch.qos.logback.classic.encoder.JsonEncoder"/>
+        </appender>
+
+        <logger name="com.tp.template" level="INFO"/>
+
+        <root level="WARN">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+</configuration>
