@@ -1,14 +1,16 @@
 package com.tp.template.api.example.adapter.out.persistence;
 
-
 import com.tp.template.api.example.adapter.out.persistence.mapper.ExamplePersistenceMapper;
 import com.tp.template.api.example.adapter.out.persistence.repository.ExampleRepository;
 import com.tp.template.api.example.application.domain.Example;
+import com.tp.template.api.example.application.dto.SearchExampleQuery;
 import com.tp.template.api.example.application.port.out.ExamplePort;
 import com.tp.template.entity.example.ExampleEntity;
 import com.tp.template.infrastructure.enums.ErrorType;
 import com.tp.template.infrastructure.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -38,6 +40,12 @@ public class ExamplePersistenceAdapter implements ExamplePort {
     public void delete(long id) {
         ExampleEntity entity = getEntity(id);
         exampleRepository.delete(entity);
+    }
+
+    @Override
+    public Page<Example> search(SearchExampleQuery query, Pageable pageable) {
+        return exampleRepository.search(query, pageable)
+                .map(ExamplePersistenceMapper::fromEntity);
     }
 
     private ExampleEntity getEntity(long id) {

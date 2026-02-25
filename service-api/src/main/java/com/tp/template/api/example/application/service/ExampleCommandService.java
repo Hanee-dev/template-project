@@ -25,8 +25,7 @@ public class ExampleCommandService implements ExampleCommand {
     @Override
     public Example updateMessage(long id, String message) {
         Example example = exampleQuery.get(id);
-        example.updateMessage(message);
-        return examplePort.save(example);
+        return examplePort.save(example.updateMessage(message));
     }
 
     @Override
