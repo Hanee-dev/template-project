@@ -26,3 +26,12 @@ springdoc:
     path: /swagger/api-docs
   swagger-ui:
     path: /swagger/ui
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics,loggers"
+  endpoint:
+    health:
+      show-details: when-authorized

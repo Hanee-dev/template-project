@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private static final String[] PUBLIC_URLS = {"/api/no-auth/**", "/swagger/**"};
+    private static final String[] PUBLIC_URLS = {"/api/no-auth/**", "/swagger/**", "/actuator/**"};
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
