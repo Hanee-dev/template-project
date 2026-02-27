@@ -4,12 +4,10 @@ import com.tp.template.infrastructure.enums.ErrorType;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.math.BigDecimal;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class MaxValidator {
-
-    private MaxValidator() {
-        /* This utility class should not be instantiated */
-    }
 
     public static class ForInteger implements ConstraintValidator<Max, Integer> {
 
