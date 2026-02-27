@@ -1,7 +1,31 @@
 package com.tp.template.infrastructure.dto;
 
-public record SearchResponse(
+import java.util.List;
+import java.util.function.Function;
+import org.springframework.data.domain.Page;
 
+public record SearchResponse<T>(
+        List<T> contents,
+        PageMeta page
 ) {
 
+    public static <S, T> SearchResponse<T> from(Page<S> page, Function<S, T> mapper) {
+        // @formatter:off
+        return new SearchResponse<>(page.getContent().stream().map(mapper).toList(), PageMeta.from(page));
+        // @formatter:on
+    }
+
+    public record PageMeta(
+            int number,
+            int size,
+            long totalElements,
+            int totalPages,
+            boolean first,
+            boolean last
+    ) {
+
+        public static PageMeta from(Page<?> page) {
+            return new PageMeta(page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages(), page.isFirst(), page.isLast());
+        }
+    }
 }

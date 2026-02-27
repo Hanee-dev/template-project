@@ -10,7 +10,6 @@ import com.tp.template.infrastructure.enums.ErrorType;
 import com.tp.template.infrastructure.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -43,8 +42,8 @@ public class ExamplePersistenceAdapter implements ExamplePort {
     }
 
     @Override
-    public Page<Example> search(SearchExampleQuery query, Pageable pageable) {
-        return exampleRepository.search(query, pageable)
+    public Page<Example> search(SearchExampleQuery query) {
+        return exampleRepository.search(query)
                 .map(ExamplePersistenceMapper::fromEntity);
     }
 

@@ -10,6 +10,8 @@ public enum ErrorType {
     E_필수_값_없음(ErrorCode.E0003, LanguageId.M_필수_값_없음),
     E_캐시설정_오류(ErrorCode.E0004, LanguageId.M_캐시설정_오류),
     E_JWT_인증_실패(ErrorCode.E0005, LanguageId.M_JWT_인증_실패),
+    E_최솟값_검증_실패(ErrorCode.E0006, LanguageId.M_최솟값_검증_실패),
+    E_최댓값_검증_실패(ErrorCode.E0007, LanguageId.M_최댓값_검증_실패),
     ;
 
     private final ErrorCode errorCode;

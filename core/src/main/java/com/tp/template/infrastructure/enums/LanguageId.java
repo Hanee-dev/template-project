@@ -9,5 +9,7 @@ public enum LanguageId {
     M_캐시설정_오류,
     M_JWT_인증_실패,
     M_JWT_유효하지_않음,
+    M_최솟값_검증_실패,
+    M_최댓값_검증_실패,
 
 }

@@ -13,18 +13,15 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
-/**
- * QueryDSL 기반 Example 검색 구현체.
- * Spring Data JPA 프래그먼트 패턴: 클래스명 = {인터페이스명}Impl
- */
 @RequiredArgsConstructor
 public class ExampleQueryRepositoryImpl implements ExampleQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<ExampleEntity> search(SearchExampleQuery query, Pageable pageable) {
+    public Page<ExampleEntity> search(SearchExampleQuery query) {
         QExampleEntity example = QExampleEntity.exampleEntity;
+        Pageable pageable = query.getPageable();
         BooleanExpression condition = messageContains(query.getMessage());
 
         List<ExampleEntity> content = queryFactory.selectFrom(example)
@@ -43,7 +40,6 @@ public class ExampleQueryRepositoryImpl implements ExampleQueryRepository {
         return new PageImpl<>(content, pageable, total);
     }
 
-    // message 가 null 또는 빈 값이면 조건 제외 (전체 조회)
     private BooleanExpression messageContains(String message) {
         return StringUtils.hasText(message) ? QExampleEntity.exampleEntity.message.containsIgnoreCase(message) : null;
     }
