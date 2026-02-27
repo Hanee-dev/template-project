@@ -4,14 +4,14 @@ import java.util.List;
 import java.util.function.Function;
 import org.springframework.data.domain.Page;
 
-public record SearchResponse<T>(
+public record BaseSearchResponse<T>(
         List<T> contents,
         PageMeta page
 ) {
 
-    public static <S, T> SearchResponse<T> from(Page<S> page, Function<S, T> mapper) {
+    public static <S, T> BaseSearchResponse<T> from(Page<S> page, Function<S, T> mapper) {
         // @formatter:off
-        return new SearchResponse<>(page.getContent().stream().map(mapper).toList(), PageMeta.from(page));
+        return new BaseSearchResponse<>(page.getContent().stream().map(mapper).toList(), PageMeta.from(page));
         // @formatter:on
     }
 
